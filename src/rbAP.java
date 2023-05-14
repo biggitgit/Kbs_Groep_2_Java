@@ -10,19 +10,20 @@ public class rbAP extends JFrame implements ActionListener {
     JFrame tF = new JFrame("Steden kiezen");
     JFrame RB = new JFrame("Routebepaling");
     String wachtwoord1 = "hallo";
-    JLabel l1,l2;
+    JLabel l1,l2,kaartLabel, km261, km306;
     JPasswordField p1;
     JButton b1,b2;
     JCheckBox s1,s2,s3,s4;
     JCheckBox[] stedenCB;
     ArrayList<Integer> gekozenSteden = new ArrayList<>();
+
+    ImageIcon kaarNL = new ImageIcon("kaartNL.png");
     public rbAP(){
         loginP.setSize(700, 500);
         loginP.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginP.setLayout(null);
-
-
-
+        loginP.getContentPane().setBackground(new Color(241,194,125));
+        //241,194,125;
         l1 = new JLabel("Vul het wachtwoord in:");
         l1.setBounds(275,100,150,50);
 
@@ -48,7 +49,9 @@ public class rbAP extends JFrame implements ActionListener {
 
     public void kiesFrame(){
         tF.setSize(700,500);
+        tF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         tF.setLayout(null);
+        tF.getContentPane().setBackground(new Color(241,194,125));
 
         l2 = new JLabel("Kies de steden voor uw route:");
         l2.setBounds(20,20,200,20);
@@ -81,9 +84,23 @@ public class rbAP extends JFrame implements ActionListener {
 
     public void RBframe(){
         RB.setSize(700,500);
+        RB.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         RB.setLayout(null);
+        RB.getContentPane().setBackground(new Color(241,194,125));
 
+        kaartLabel = new JLabel();
+        kaartLabel.setIcon(kaarNL);
+        kaartLabel.setBounds(250,15,366,430);
+        kaartLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 
+        km261 = new JLabel("261 km");
+        km261.setBounds(410,410,100,50);
+        km306 = new JLabel("306 km");
+        km306.setBounds(255,200,100,50);
+
+        RB.add(kaartLabel);
+        RB.add(km261);
+        RB.add(km306);
 
         RB.setResizable(false);
         RB.setVisible(true);

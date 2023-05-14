@@ -14,8 +14,12 @@ public class Main {
         try (Connection conn = DriverManager.getConnection(url,"root", "")) {
             if (conn != null) {
                 System.out.println("Verbinding gelukt");
+
+                Statement statement = conn.createStatement();
+
+                ResultSet rs = statement.executeQuery("SELECT * FROM stad;");
             } else {
-                System.out.println("fout1");
+                System.out.println("Geen verbinding gelukt");
             }
         }   catch (SQLException e){
             System.err.println(e.getMessage() + "fout 2");
