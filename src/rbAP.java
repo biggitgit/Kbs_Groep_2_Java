@@ -24,6 +24,8 @@ public class rbAP extends JFrame implements ActionListener {
         loginP.setLayout(null);
         loginP.getContentPane().setBackground(new Color(241,194,125));
         //241,194,125;
+        loginP.setLocationRelativeTo(null);
+
         l1 = new JLabel("Vul het wachtwoord in:");
         l1.setBounds(275,100,150,50);
 
@@ -52,6 +54,7 @@ public class rbAP extends JFrame implements ActionListener {
         tF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         tF.setLayout(null);
         tF.getContentPane().setBackground(new Color(241,194,125));
+        tF.setLocationRelativeTo(null);
 
         l2 = new JLabel("Kies de steden voor uw route:");
         l2.setBounds(20,20,200,20);
@@ -87,6 +90,7 @@ public class rbAP extends JFrame implements ActionListener {
         RB.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         RB.setLayout(null);
         RB.getContentPane().setBackground(new Color(241,194,125));
+        RB.setLocationRelativeTo(null);
 
         kaartLabel = new JLabel();
         kaartLabel.setIcon(kaarNL);
