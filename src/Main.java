@@ -26,5 +26,6 @@ public class Main {
         }
 
         rbAP rbAP1 = new rbAP();
+        System.out.println(rbAP1.berekenAfstandSteden(52.4,4.9,51.9,4.5));
 }
 }
