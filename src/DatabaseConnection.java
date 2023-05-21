@@ -14,9 +14,9 @@ public class DatabaseConnection {
             return null;
         }
 
-        String url = "jdbc:mysql://localhost/NerdyGadgets_java";
-        String username = "root";
-        String password = "";
+        String url = System.getenv("S_URL");
+        String username = System.getenv("USERNAME");
+        String password = System.getenv("PASS_ds");
 
         try {
             conn = DriverManager.getConnection(url, username, password);

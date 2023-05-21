@@ -3,10 +3,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Connection;
+import java.util.Objects;
 
 public class rbAP extends JFrame implements ActionListener {
     ResultSet rs;
@@ -14,13 +13,15 @@ public class rbAP extends JFrame implements ActionListener {
     JFrame loginP = new JFrame("Inloggen");
     JFrame tF = new JFrame("Steden kiezen");
     JFrame RB = new JFrame("Routebepaling");
-    String wachtwoord1 = "";
-    JLabel l1,l2,kaartLabel, km261, km306, routeF,titelInloggen,gekozenS;
+    JLabel l1,l2,kaartLabel, km261, km306, routeF,titelInloggen,gekozenS,startLabel;
     JPasswordField p1;
     JButton b1,b2;
     ArrayList<JCheckBox> stedenCB;
     ArrayList<Integer> gekozenSteden;
-
+    ArrayList<String> startComboBox;
+    String[] ComboArray;
+    JComboBox ComboBoxstart;
+String startStad;
     ImageIcon kaarNL = new ImageIcon("kaartNL.png");
     ImageIcon routeFoto = new ImageIcon("routeFoto.png");
 
@@ -104,23 +105,42 @@ private int aantalSteden = 0;
         b2 = new JButton("Route bepalen");
         b2.setBounds(520,20,150,75);
         b2.addActionListener(this);
+        stedenCB = new ArrayList<>();
+        startComboBox = new ArrayList<>();
+
+
         try {
-            stedenCB = new ArrayList<>();
+            int x_CheckBox = 20;
             while (rs.next()) {
+                if (aantalSteden <10){
+                    x_CheckBox = 20;
+                } else if (aantalSteden <20) {
+                    x_CheckBox = 170;
+                } else if (aantalSteden <30) {
+                    x_CheckBox = 320;
+                }
                 String stadNaam = rs.getString("stad_naam");
                 JCheckBox stadCheckbox = new JCheckBox(stadNaam);
-                stadCheckbox.setBounds(20, 50 + (aantalSteden * 30), 200, 20);
+                stadCheckbox.setBounds(x_CheckBox, 80 + (aantalSteden * 30), 150, 20);
                 stadCheckbox.setBackground(new Color(241,194,125));
                 tF.add(stadCheckbox);
 
+                startComboBox.add(stadNaam);
                 stedenCB.add(stadCheckbox);
                 aantalSteden++;
+
             }
+            ComboArray = startComboBox.toArray(new String[0]);
+
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        ComboBoxstart = new JComboBox(ComboArray);
+        ComboBoxstart.setBounds(20, 50, 150, 20);
+        ComboBoxstart.setBackground(new Color(241,194,125));
+        tF.add(ComboBoxstart);
 
         tF.add(b2);
         tF.add(l2);
@@ -150,14 +170,21 @@ private int aantalSteden = 0;
         gekozenS = new JLabel("Gekozen steden:");
         gekozenS.setBounds(20,20,350,20);
         gekozenS.setFont(new Font("Verdana", Font.BOLD, 20));
+
+        startStad = Objects.requireNonNull(ComboBoxstart.getSelectedItem()).toString();
+
+        startLabel = new JLabel("Start: " + startStad);
+        startLabel.setBounds(20, 50, 200, 20);
+
         int i = 0;
             for (int gekozenStad  : gekozenSteden) {
-
                 String stadnaam = DatabaseConnection.getStadNaam(gekozenStad );
-                JLabel gekozenStadLabel = new JLabel(stadnaam);
-                gekozenStadLabel.setBounds(20, 50 + (i * 30), 100, 20);
-                RB.add(gekozenStadLabel);
-                i++;
+                if (!stadnaam.equals(startStad)) {
+                    JLabel gekozenStadLabel = new JLabel(stadnaam);
+                    gekozenStadLabel.setBounds(20, 80 + (i * 30), 150, 20);
+                    RB.add(gekozenStadLabel);
+                    i++;
+                }
             }
 
 
@@ -165,6 +192,7 @@ private int aantalSteden = 0;
         RB.add(km261);
         RB.add(km306);
         RB.add(gekozenS);
+        RB.add(startLabel);
 
         RB.setResizable(false);
         RB.setVisible(true);
@@ -174,15 +202,15 @@ private int aantalSteden = 0;
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == b1){
+        if (e.getSource() == b1) {
             String ingevuldWW = new String(p1.getPassword());
+                if (ingevuldWW.equals(System.getenv("PASS_inlog"))) {
+                    loginP.dispose();
+                    kiesFrame();
+                } else {
+                    p1.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.red));
+                }
 
-            if (ingevuldWW.equals(wachtwoord1)){
-                loginP.dispose();
-                kiesFrame();
-            } else {
-                b1.setBackground(Color.red);
-            }
         }
 
         if (e.getSource() == b2){
@@ -198,7 +226,7 @@ private int aantalSteden = 0;
             }
 
             System.out.println("Gekozen Steden:");
-            for (int gS: gekozenSteden) {
+            for (int ignored : gekozenSteden) {
                 System.out.println("Stad " + (o+1) + ": " + gekozenSteden.get(o));
                 o++;
             }
