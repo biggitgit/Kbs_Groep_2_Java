@@ -11,18 +11,17 @@ public class rbAP extends JFrame implements ActionListener {
     ResultSet rs;
 
     JFrame loginP = new JFrame("Inloggen");
-    JFrame tF = new JFrame("Steden kiezen");
-    JFrame RB = new JFrame("Routebepaling");
-    JLabel l1,l2,kaartLabel, km261, km306, routeF,titelInloggen,gekozenS,startLabel;
+
+
+    JLabel l1, routeF,titelInloggen;
     JPasswordField p1;
-    JButton b1,b2;
-    ArrayList<JCheckBox> stedenCB;
-    ArrayList<Integer> gekozenSteden;
-    ArrayList<String> startComboBox;
-    String[] ComboArray;
-    JComboBox ComboBoxstart;
-String startStad;
-    ImageIcon kaarNL = new ImageIcon("kaartNL.png");
+    JButton b1;
+
+
+
+
+
+
     ImageIcon routeFoto = new ImageIcon("routeFoto.png");
 
 private int aantalSteden = 0;
@@ -91,112 +90,9 @@ private int aantalSteden = 0;
         loginP.setVisible(true);
     }
 
-    public void kiesFrame() {
-        tF.setSize(700,500);
-        tF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        tF.setLayout(null);
-        tF.getContentPane().setBackground(new Color(241,194,125));
-        tF.setLocationRelativeTo(null);
-
-        l2 = new JLabel("Kies de steden voor uw route:");
-        l2.setBounds(20,20,350,20);
-        l2.setFont(new Font("Verdana", Font.BOLD, 20));
-
-        b2 = new JButton("Route bepalen");
-        b2.setBounds(520,20,150,75);
-        b2.addActionListener(this);
-        stedenCB = new ArrayList<>();
-        startComboBox = new ArrayList<>();
 
 
-        try {
-            int x_CheckBox = 20;
-            while (rs.next()) {
-                if (aantalSteden <10){
-                    x_CheckBox = 20;
-                } else if (aantalSteden <20) {
-                    x_CheckBox = 170;
-                } else if (aantalSteden <30) {
-                    x_CheckBox = 320;
-                }
-                String stadNaam = rs.getString("stad_naam");
-                JCheckBox stadCheckbox = new JCheckBox(stadNaam);
-                stadCheckbox.setBounds(x_CheckBox, 80 + (aantalSteden * 30), 150, 20);
-                stadCheckbox.setBackground(new Color(241,194,125));
-                tF.add(stadCheckbox);
 
-                startComboBox.add(stadNaam);
-                stedenCB.add(stadCheckbox);
-                aantalSteden++;
-
-            }
-            ComboArray = startComboBox.toArray(new String[0]);
-
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        ComboBoxstart = new JComboBox(ComboArray);
-        ComboBoxstart.setBounds(20, 50, 150, 20);
-        ComboBoxstart.setBackground(new Color(241,194,125));
-        tF.add(ComboBoxstart);
-
-        tF.add(b2);
-        tF.add(l2);
-
-
-        tF.setResizable(false);
-        tF.setVisible(true);
-    }
-
-    public void RBframe(){
-        RB.setSize(700,500);
-        RB.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        RB.setLayout(null);
-        RB.getContentPane().setBackground(new Color(241,194,125));
-        RB.setLocationRelativeTo(null);
-
-        kaartLabel = new JLabel();
-        kaartLabel.setIcon(kaarNL);
-        kaartLabel.setBounds(250,15,366,430);
-        kaartLabel.setBorder(BorderFactory.createLineBorder(Color.black));
-
-        km261 = new JLabel("261 km");
-        km261.setBounds(410,410,100,50);
-        km306 = new JLabel("306 km");
-        km306.setBounds(255,200,100,50);
-
-        gekozenS = new JLabel("Gekozen steden:");
-        gekozenS.setBounds(20,20,350,20);
-        gekozenS.setFont(new Font("Verdana", Font.BOLD, 20));
-
-        startStad = Objects.requireNonNull(ComboBoxstart.getSelectedItem()).toString();
-
-        startLabel = new JLabel("Start: " + startStad);
-        startLabel.setBounds(20, 50, 200, 20);
-
-        int i = 0;
-            for (int gekozenStad  : gekozenSteden) {
-                String stadnaam = DatabaseConnection.getStadNaam(gekozenStad );
-                if (!stadnaam.equals(startStad)) {
-                    JLabel gekozenStadLabel = new JLabel(stadnaam);
-                    gekozenStadLabel.setBounds(20, 80 + (i * 30), 150, 20);
-                    RB.add(gekozenStadLabel);
-                    i++;
-                }
-            }
-
-
-        RB.add(kaartLabel);
-        RB.add(km261);
-        RB.add(km306);
-        RB.add(gekozenS);
-        RB.add(startLabel);
-
-        RB.setResizable(false);
-        RB.setVisible(true);
-    }
 
 
 
@@ -205,35 +101,13 @@ private int aantalSteden = 0;
         if (e.getSource() == b1) {
             String ingevuldWW = new String(p1.getPassword());
                 if (ingevuldWW.equals(System.getenv("PASS_inlog"))) {
+                    System.out.println("test1");
                     loginP.dispose();
-                    kiesFrame();
+                    new kiesFrame();
                 } else {
                     p1.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.red));
                 }
 
         }
-
-        if (e.getSource() == b2){
-            gekozenSteden = new ArrayList<>();
-            int i,o;
-            i=1;
-            o=0;
-            for (JCheckBox CB: stedenCB) {
-                if (CB.isSelected()){
-                    gekozenSteden.add(i);
-                }
-                i++;
-            }
-
-            System.out.println("Gekozen Steden:");
-            for (int ignored : gekozenSteden) {
-                System.out.println("Stad " + (o+1) + ": " + gekozenSteden.get(o));
-                o++;
-            }
-
-            tF.dispose();
-            RBframe();
-        }
-
     }
 }

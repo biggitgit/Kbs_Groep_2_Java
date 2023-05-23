@@ -25,7 +25,7 @@ public class DatabaseConnection {
 
                  statement = conn.createStatement();
 
-                rs = statement.executeQuery("SELECT * FROM stad;");
+                rs = statement.executeQuery("SELECT * FROM cities;");
             } else {
                 System.out.println("Geen verbinding gelukt");
             }
@@ -59,7 +59,7 @@ public class DatabaseConnection {
         try {
             conn = DriverManager.getConnection(url, username, password);
             if (conn != null) {
-                String query = "SELECT stad_naam FROM stad WHERE stad_id = ?";
+                String query = "SELECT city FROM cities WHERE id = ?";
                 statement = conn.prepareStatement(query);
                 statement.setInt(1, stadId);
                 rs = statement.executeQuery();
