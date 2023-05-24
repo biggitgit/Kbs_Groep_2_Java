@@ -96,12 +96,12 @@ private int aantalSteden = 0;
 
 
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == b1) {
             String ingevuldWW = new String(p1.getPassword());
                 if (ingevuldWW.equals(System.getenv("PASS_inlog"))) {
-                    System.out.println("test1");
                     loginP.dispose();
                     new kiesFrame();
                 } else {

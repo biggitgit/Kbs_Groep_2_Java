@@ -7,26 +7,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class kiesFrame extends JFrame implements ActionListener {
-    ResultSet rs;
     JFrame tF = new JFrame("Steden kiezen");
-    JLabel titelK;
-    ArrayList<JCheckBox> stedenCB;
-    JButton routeB;
-    ArrayList<String> startComboBox;
-    ArrayList<Integer> gekozenSteden = new ArrayList<>();
-    String[] ComboArray;
-    private int aantalSteden = 0;
-    JComboBox ComboBoxstart;
-
+    JLabel titelK, fotoDots,extraInfZoek,voegMin2, aantalSteden;
+JTextField zoekField;
+    JButton routeB, voegToeStad, resetKnop;
+    ArrayList<Stad> gekozenSteden = new ArrayList<>();
+    ImageIcon routeFoto = new ImageIcon("dotsFoto.png");
+    Color kleur = new Color(241,194,125);
 
 
     public kiesFrame() {
-        rs =  DatabaseConnection.DatabaseConn();
-
         tF.setSize(700,500);
         tF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         tF.setLayout(null);
-        tF.getContentPane().setBackground(new Color(241,194,125));
+        tF.getContentPane().setBackground(kleur);// #F1C27D
         tF.setLocationRelativeTo(null);
 
         titelK = new JLabel("Kies de steden voor uw route:");
@@ -34,91 +28,127 @@ public class kiesFrame extends JFrame implements ActionListener {
         titelK.setFont(new Font("Verdana", Font.BOLD, 20));
 
         routeB = new JButton("Route bepalen");
-        routeB.setBounds(520,20,150,75);
+        routeB.setBounds(510,20,150,75);
+        routeB.setBackground(kleur);
+        routeB.setForeground(Color.black);
+        routeB.setBorder(BorderFactory.createLineBorder(Color.black,2));
         routeB.addActionListener(this);
-        stedenCB = new ArrayList<>();
-        startComboBox = new ArrayList<>();
 
+        zoekField = new JTextField();
+        zoekField.setBounds(20,70,250,40);
 
-        try {
-            int x_CheckBox = 20;
-            while (rs.next()) {
-                if (aantalSteden <10){
-                    x_CheckBox = 20;
-                } else if (aantalSteden <20) {
-                    x_CheckBox = 170;
-                } else if (aantalSteden <30) {
-                    x_CheckBox = 320;
-                }
-                String stadNaam = rs.getString("city");
-                JCheckBox stadCheckbox = new JCheckBox(stadNaam);
-                stadCheckbox.setBounds(x_CheckBox, 80 + (aantalSteden * 30), 150, 20);
-                stadCheckbox.setBackground(new Color(241,194,125));
-                tF.add(stadCheckbox);
+        extraInfZoek = new JLabel("*Vul de start-stad als eerst in!");
+        extraInfZoek.setBounds(20,40,200,40);
 
-                startComboBox.add(stadNaam);
-                stedenCB.add(stadCheckbox);
-                aantalSteden++;
+        voegToeStad = new JButton("Voeg Toe");
+        voegToeStad.setBounds(275,70,90,40);
+        voegToeStad.setBackground(kleur);
+        voegToeStad.setForeground(Color.black);
+        voegToeStad.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        voegToeStad.addActionListener(this);
 
-            }
-            ComboArray = startComboBox.toArray(new String[0]);
+        fotoDots = new JLabel();
+        fotoDots.setIcon(routeFoto);
+        fotoDots.setBounds(35,130,600,310);
 
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        voegMin2 = new JLabel("*Minimaal 2 steden toegevoegt");
+        voegMin2.setBounds(20,100,200,40);
+        voegMin2.setForeground(Color.RED);
 
-        ComboBoxstart = new JComboBox(ComboArray);
-        ComboBoxstart.setBounds(20, 50, 150, 20);
-        ComboBoxstart.setBackground(new Color(241,194,125));
+        resetKnop = new JButton("Reset steden");
+        resetKnop.setBounds(560,410,110,40);
+        resetKnop.setForeground(Color.black);
+        resetKnop.setBackground(Color.red);
+        resetKnop.addActionListener(this);
 
+        aantalSteden = new JLabel("Aantal steden: " + gekozenSteden.size());
+        aantalSteden.setBounds(510,100,200,40);
 
-
-        tF.add(ComboBoxstart);
-
+        tF.add(zoekField);
         tF.add(routeB);
         tF.add(titelK);
-
+        tF.add(voegToeStad);
+        tF.add(fotoDots);
+        tF.add(extraInfZoek);
+        tF.add(voegMin2);
+        tF.add(resetKnop);
+        tF.add(aantalSteden);
 
         tF.setResizable(false);
         tF.setVisible(true);
 
         //tF.dispose();
     }
-    public JComboBox getComboBoxstart() {
-        return ComboBoxstart;
+
+    public boolean stadChecker(String stadNaam) {
+        boolean aanWezig = false;
+        for (Stad stad: gekozenSteden) {
+            if (stad.getNaam().equalsIgnoreCase(stadNaam)) {
+                aanWezig = true;
+                System.out.println("Stad is al toegevoegt: "  + zoekField.getText());
+                break;
+            }
+        }
+        if (!aanWezig) {
+            try (ResultSet rs = DatabaseConnection.DatabaseConn()) {
+                while (true) {
+                    assert rs != null;
+                    if (!rs.next()) break;
+                    String city = rs.getString("city");
+                    double latitude = rs.getDouble("lat");
+                    double longitude = rs.getDouble("lng");
+                    if (city.equalsIgnoreCase(stadNaam)) {
+                        System.out.println("Stad toegevoegt: "  + zoekField.getText());
+                        gekozenSteden.add(new Stad(stadNaam, latitude, longitude));
+                        if (gekozenSteden.size() > 1){
+                            voegMin2.setForeground(Color.green);
+                        } else {
+                            voegMin2.setForeground(Color.red);
+                        }
+                        aanWezig = true;
+                        break;
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return aanWezig;
     }
 
-    public ArrayList<Integer> getGekozenSteden() {
+    public ArrayList<Stad> getGekozenSteden() {
         return gekozenSteden;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("test2");
         if (e.getSource() == routeB){
-            int i,o;
-            i=1;
-            o=0;
-            for (JCheckBox CB: stedenCB) {
-                if (CB.isSelected()){
-                    gekozenSteden.add(i);
-                }
-                i++;
+            if (gekozenSteden.size() > 1){
+            for (Stad stad:gekozenSteden) {
+                System.out.println(stad.getNaam());
             }
-
-            System.out.println("Gekozen Steden:");
-            for (int ignored : gekozenSteden) {
-                System.out.println("Stad " + (o+1) + ": " + gekozenSteden.get(o));
-                o++;
-            }
-
-            System.out.println("test3");
-
             tF.dispose();
             new routeB(this);
+            }
         }
-        System.out.println("test4");
+        if (e.getSource() == voegToeStad){
+            if (!stadChecker(zoekField.getText())){
+                if (!zoekField.getText().equals("")) {
+                    System.out.println("Stad niet gevonden: " + zoekField.getText());
+                } else {
+                    System.out.println("Niets ingevuld");
+                }
+            }
+            zoekField.setText("");
+            aantalSteden.setText("Aantal steden: " + gekozenSteden.size());
+            }
+        if (e.getSource() == resetKnop){
+            System.out.println("Steden gereset");
+            gekozenSteden.clear();
+            voegMin2.setForeground(Color.red);
+            aantalSteden.setText("Aantal steden: " + gekozenSteden.size());
+        }
+
 
     }
 }

@@ -21,10 +21,7 @@ public class DatabaseConnection {
         try {
             conn = DriverManager.getConnection(url, username, password);
             if (conn != null) {
-                System.out.println("Verbinding gelukt");
-
-                 statement = conn.createStatement();
-
+                statement = conn.createStatement();
                 rs = statement.executeQuery("SELECT * FROM cities;");
             } else {
                 System.out.println("Geen verbinding gelukt");
@@ -38,6 +35,7 @@ public class DatabaseConnection {
         }
         return rs;
     }
+
     public static String getStadNaam(int stadId) {
         String stadNaam = null;
         Connection conn = null;
@@ -65,7 +63,7 @@ public class DatabaseConnection {
                 rs = statement.executeQuery();
 
                 if (rs.next()) {
-                    stadNaam = rs.getString("stad_naam");
+                    stadNaam = rs.getString("city");
                 }
                 System.out.println("Naam gevonden: " + stadNaam);
             } else {
@@ -91,4 +89,5 @@ public class DatabaseConnection {
 
         return stadNaam;
     }
+
 }
