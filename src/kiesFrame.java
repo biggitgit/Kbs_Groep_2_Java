@@ -24,24 +24,24 @@ JTextField zoekField;
         tF.setLocationRelativeTo(null);
 
         titelK = new JLabel("Kies de steden voor uw route:");
-        titelK.setBounds(20,20,350,20);
-        titelK.setFont(new Font("Verdana", Font.BOLD, 20));
+        titelK.setBounds(120,60,500,30);
+        titelK.setFont(new Font("Verdana", Font.BOLD, 25));
 
         routeB = new JButton("Route bepalen");
-        routeB.setBounds(510,20,150,75);
+        routeB.setBounds(470,350,150,75);
         routeB.setBackground(kleur);
         routeB.setForeground(Color.black);
         routeB.setBorder(BorderFactory.createLineBorder(Color.black,2));
         routeB.addActionListener(this);
 
         zoekField = new JTextField();
-        zoekField.setBounds(20,70,250,40);
+        zoekField.setBounds(155,150,250,40);
 
         extraInfZoek = new JLabel("*Vul de start-stad als eerst in!");
-        extraInfZoek.setBounds(20,40,200,40);
+        extraInfZoek.setBounds(155,120,200,40);
 
         voegToeStad = new JButton("Voeg Toe");
-        voegToeStad.setBounds(275,70,90,40);
+        voegToeStad.setBounds(410,150,90,40);
         voegToeStad.setBackground(kleur);
         voegToeStad.setForeground(Color.black);
         voegToeStad.setBorder(BorderFactory.createLineBorder(Color.black,1));
@@ -52,17 +52,17 @@ JTextField zoekField;
         fotoDots.setBounds(35,130,600,310);
 
         voegMin2 = new JLabel("*Minimaal 2 steden toegevoegt");
-        voegMin2.setBounds(20,100,200,40);
+        voegMin2.setBounds(155,180,200,40);
         voegMin2.setForeground(Color.RED);
 
         resetKnop = new JButton("Reset steden");
-        resetKnop.setBounds(560,410,110,40);
+        resetKnop.setBounds(60,350,150,75);
         resetKnop.setForeground(Color.black);
         resetKnop.setBackground(Color.red);
         resetKnop.addActionListener(this);
 
         aantalSteden = new JLabel("Aantal steden: " + gekozenSteden.size());
-        aantalSteden.setBounds(510,100,200,40);
+        aantalSteden.setBounds(470,425,200,40);
 
         tF.add(zoekField);
         tF.add(routeB);
