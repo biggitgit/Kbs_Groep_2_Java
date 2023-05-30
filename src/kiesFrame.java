@@ -124,9 +124,6 @@ JTextField zoekField;
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == routeB){
             if (gekozenSteden.size() > 1){
-            for (Stad stad:gekozenSteden) {
-                System.out.println(stad.getNaam());
-            }
             tF.dispose();
             new routeB(this);
             }

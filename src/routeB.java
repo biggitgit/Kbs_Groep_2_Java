@@ -14,7 +14,7 @@ public class routeB extends JFrame implements ActionListener {
     Color kleur = new Color(241,194,125);
     Stad startStad;
     kiesFrame kF;
-    ArrayList<Stad> gekozenSteden;
+    ArrayList<Stad> gekozenSteden,eindRoute;
     JScrollPane scrollbarSteden;
     String stadnaam;
     JList<String> stedenList;
@@ -83,8 +83,51 @@ public class routeB extends JFrame implements ActionListener {
         RB.add(terugKiezen);
         RB.add(verticaleLijn);
 
+
+        bepaalRoute();
         RB.setResizable(false);
         RB.setVisible(true);
+    }
+
+    public double berekenAfstandSteden(double breedteGraad1,double lengteGraad1,double breedteGraad2,double lengteGraad2) {
+
+        double BreedtegraadStart = (Math.PI / 180) * (breedteGraad2-breedteGraad1);
+        double LengtegraadStart = (Math.PI / 180) * (lengteGraad2-lengteGraad1);
+
+        double start = Math.sin(BreedtegraadStart/2) * Math.sin(BreedtegraadStart/2) +
+                Math.cos((Math.PI / 180) * (breedteGraad1)) *
+                        Math.cos((Math.PI / 180) * (breedteGraad2)) *
+                        Math.sin(LengtegraadStart / 2) *
+                        Math.sin(LengtegraadStart / 2);
+
+        double eind = 2 * Math.atan2(Math.sqrt(start), Math.sqrt(1-start));
+
+        return eind * 6371; //Eindgetal X radius van de aarde in KM
+    }
+    public void bepaalRoute() {
+        eindRoute = new ArrayList<>();
+        eindRoute.add(startStad);
+        Stad kleinsteStad = null;
+        for (int i=1;i<gekozenSteden.size();i++) {
+            for (Stad stad : gekozenSteden) {
+                if (stad != startStad && stad != kleinsteStad && !eindRoute.contains(stad)) {
+                    if (kleinsteStad == null) {
+                        kleinsteStad = stad;
+                    }
+                    Stad laatsteStad = eindRoute.get(eindRoute.size() - 1);
+                        if (berekenAfstandSteden(stad.getLatitude(), stad.getLongitude(), laatsteStad.getLatitude(), laatsteStad.getLongitude())
+                                < berekenAfstandSteden(kleinsteStad.getLatitude(), kleinsteStad.getLongitude(), laatsteStad.getLatitude(), laatsteStad.getLongitude())) {
+                            kleinsteStad = stad;
+                        }
+                    }
+            }
+            eindRoute.add(kleinsteStad);
+            kleinsteStad = null;
+        }
+        eindRoute.add(startStad);
+        for (Stad stad:eindRoute) {
+            System.out.println(stad.getNaam());
+        }
     }
 
     @Override
