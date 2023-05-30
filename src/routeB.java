@@ -13,18 +13,24 @@ public class routeB extends JFrame implements ActionListener {
     ImageIcon kaarNL = new ImageIcon("kaartNL.png");
     Color kleur = new Color(241,194,125);
     Stad startStad;
+    Stad eindStad;
     kiesFrame kF;
     ArrayList<Stad> gekozenSteden,eindRoute;
     JScrollPane scrollbarSteden;
     String stadnaam;
     JList<String> stedenList;
     JButton terugKiezen;
+    double kmRoute = 0;
+    double kmTerugRoute = 0;
+    double totaalRoute = 0;
 
     public routeB(kiesFrame kiesFrame){
         kF = kiesFrame;
+
         gekozenSteden = kF.getGekozenSteden();
         if (gekozenSteden.get(0) != null){
             startStad = gekozenSteden.get(0);
+            eindStad = gekozenSteden.get(gekozenSteden.size() - 1);
             stadnaam = startStad.getNaam();
         } else {
             stadnaam = "geen stad gekozen";
@@ -121,13 +127,18 @@ public class routeB extends JFrame implements ActionListener {
                         }
                     }
             }
-            eindRoute.add(kleinsteStad);
+            Stad LLstad = eindRoute.get(eindRoute.size() - 1);
+            kmRoute += (berekenAfstandSteden(kleinsteStad.getLatitude(), kleinsteStad.getLongitude(), LLstad.getLatitude(), LLstad.getLongitude()));
+            kmTerugRoute = (berekenAfstandSteden(eindStad.getLatitude(), eindStad.getLongitude(),startStad.getLatitude(), startStad.getLongitude()));
+            totaalRoute = kmRoute + kmTerugRoute;
+            eindRoute.add(kleinsteStad) ;// + terug km naar start stad
             kleinsteStad = null;
         }
         eindRoute.add(startStad);
         for (Stad stad:eindRoute) {
             System.out.println(stad.getNaam());
         }
+        System.out.println("Totaal "+totaalRoute+" KM");
     }
 
     @Override

@@ -89,7 +89,7 @@ private int aantalSteden = 0;
             String ingevuldWW = new String(p1.getPassword());
                 if (ingevuldWW.equals(System.getenv("PASS_inlog"))) {
                     loginP.dispose();
-                    new kiesFrame();
+                    new welkom();
                 } else {
                     p1.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.red));
                 }
