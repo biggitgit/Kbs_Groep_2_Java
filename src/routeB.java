@@ -4,21 +4,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class routeB extends JFrame implements ActionListener {
     JFrame RB = new JFrame("Routebepaling");
-    JLabel kaartLabel, km261, km306,gekozenS,startLabel, route;
-    ImageIcon kaarNL = new ImageIcon("kaartNL.png");
+    JLabel gekozenS,startLabel, route,startLabelROUTE,KMroute, KMrouteTotaal, reisTijd;
     Color kleur = new Color(241,194,125);
     Stad startStad;
     Stad eindStad;
     kiesFrame kF;
     ArrayList<Stad> gekozenSteden,eindRoute;
-    JScrollPane scrollbarSteden;
+    JScrollPane scrollbarSteden,scrollbarStedenROUTE;
     String stadnaam;
-    JList<String> stedenList;
+    JList<String> stedenList,stedenListROUTE;
     JButton terugKiezen;
     double kmRoute = 0;
     double kmTerugRoute = 0;
@@ -51,6 +51,8 @@ public class routeB extends JFrame implements ActionListener {
 
         startLabel = new JLabel("Start: " + startStad.getNaam());
         startLabel.setBounds(20, 50, 200, 20);
+        startLabelROUTE = new JLabel("Start: " + startStad.getNaam());
+        startLabelROUTE.setBounds(260, 50, 200, 20);
 
 
 
@@ -61,6 +63,7 @@ public class routeB extends JFrame implements ActionListener {
             Stad stad = gekozenSteden.get(i);
             stedenListModel.addElement(stad.getNaam());
         }
+
 
         stedenList = new JList<>(stedenListModel);
         stedenList.setBackground(kleur);
@@ -91,6 +94,43 @@ public class routeB extends JFrame implements ActionListener {
 
 
         bepaalRoute();
+
+        DefaultListModel<String> stedenListModelROUTE = new DefaultListModel<>();
+        for (int i = 1; i < eindRoute.size(); i++) {
+            Stad stad = eindRoute.get(i);
+            stedenListModelROUTE.addElement(i + ". " +stad.getNaam());
+        }
+
+        stedenListROUTE = new JList<>(stedenListModelROUTE);
+        stedenListROUTE.setBackground(kleur);
+        scrollbarStedenROUTE = new JScrollPane(stedenListROUTE);
+        scrollbarStedenROUTE.setBounds(260, 80, 200, 300);
+
+        RB.add(startLabelROUTE);
+        RB.add(scrollbarStedenROUTE);
+
+        KMroute = new JLabel("Lengte van de route:");
+        KMroute.setBounds(480, 50, 200, 20);
+        DecimalFormat decimalFormat1 = new DecimalFormat("#.00");
+        String formattedValue = decimalFormat1.format(totaalRoute);
+        KMrouteTotaal = new JLabel("Lengte in km: " + formattedValue + " km");
+        KMrouteTotaal.setBounds(480, 80, 200, 20);
+
+
+
+
+        double totaleTijdUren = totaalRoute/100;
+        int uren = (int) totaleTijdUren;
+
+        int minuten = (int) ((totaleTijdUren - uren)*60);
+
+        reisTijd = new JLabel("Reistijd: " + uren + " uur en " + minuten + "  minuten");
+        reisTijd.setBounds(480, 100, 200, 20);
+
+        RB.add(KMroute);
+        RB.add(KMrouteTotaal);
+        RB.add(reisTijd);
+
         RB.setResizable(false);
         RB.setVisible(true);
     }

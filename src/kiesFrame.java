@@ -8,11 +8,10 @@ import java.util.ArrayList;
 
 public class kiesFrame extends JFrame implements ActionListener {
     JFrame tF = new JFrame("Steden kiezen");
-    JLabel titelK, fotoDots,extraInfZoek,voegMin2, aantalSteden;
+    JLabel titelK,extraInfZoek,voegMin2, aantalSteden;
 JTextField zoekField;
-    JButton routeB, voegToeStad, resetKnop;
+    JButton routeB, voegToeStad, resetKnop, terugKnop;
     ArrayList<Stad> gekozenSteden = new ArrayList<>();
-    ImageIcon routeFoto = new ImageIcon("dotsFoto.png");
     Color kleur = new Color(241,194,125);
 
 
@@ -47,9 +46,6 @@ JTextField zoekField;
         voegToeStad.setBorder(BorderFactory.createLineBorder(Color.black,1));
         voegToeStad.addActionListener(this);
 
-        fotoDots = new JLabel();
-        fotoDots.setIcon(routeFoto);
-        fotoDots.setBounds(35,130,600,310);
 
         voegMin2 = new JLabel("*Minimaal 2 steden toegevoegt");
         voegMin2.setBounds(155,180,200,40);
@@ -64,15 +60,22 @@ JTextField zoekField;
         aantalSteden = new JLabel("Aantal steden: " + gekozenSteden.size());
         aantalSteden.setBounds(470,425,200,40);
 
+        terugKnop = new JButton("Terug");
+        terugKnop.setBounds(20,20,100,25);
+        terugKnop.setBackground(kleur);
+        terugKnop.setForeground(Color.black);
+        terugKnop.setBorder(BorderFactory.createLineBorder(Color.black,2));
+        terugKnop.addActionListener(this);
+
         tF.add(zoekField);
         tF.add(routeB);
         tF.add(titelK);
         tF.add(voegToeStad);
-        tF.add(fotoDots);
         tF.add(extraInfZoek);
         tF.add(voegMin2);
         tF.add(resetKnop);
         tF.add(aantalSteden);
+        tF.add(terugKnop);
 
         tF.setResizable(false);
         tF.setVisible(true);
@@ -83,21 +86,21 @@ JTextField zoekField;
     public boolean stadChecker(String stadNaam) {
         boolean aanWezig = false;
         for (Stad stad: gekozenSteden) {
-            if (stad.getNaam().equalsIgnoreCase(stadNaam)) {
+            if (stad.getNaam().equals(stadNaam)) {
                 aanWezig = true;
                 System.out.println("Stad is al toegevoegt: "  + zoekField.getText());
                 break;
             }
         }
         if (!aanWezig) {
-            try (ResultSet rs = DatabaseConnection.DatabaseConn()) {
+            try (ResultSet rs = DatabaseConnection.getCities()) {
                 while (true) {
                     assert rs != null;
                     if (!rs.next()) break;
                     String city = rs.getString("city");
                     double latitude = rs.getDouble("lat");
                     double longitude = rs.getDouble("lng");
-                    if (city.equalsIgnoreCase(stadNaam)) {
+                    if (city.equals(stadNaam)) {
                         System.out.println("Stad toegevoegt: "  + zoekField.getText());
                         gekozenSteden.add(new Stad(stadNaam, latitude, longitude));
                         if (gekozenSteden.size() > 1){
@@ -105,8 +108,12 @@ JTextField zoekField;
                         } else {
                             voegMin2.setForeground(Color.red);
                         }
+                        zoekField.setText("");
+                        voegToeStad.setBackground(Color.green);
                         aanWezig = true;
                         break;
+                    } else {
+                        voegToeStad.setBackground(Color.red);
                     }
                 }
             } catch (SQLException e) {
@@ -136,7 +143,7 @@ JTextField zoekField;
                     System.out.println("Niets ingevuld");
                 }
             }
-            zoekField.setText("");
+
             aantalSteden.setText("Aantal steden: " + gekozenSteden.size());
             }
         if (e.getSource() == resetKnop){
@@ -145,7 +152,9 @@ JTextField zoekField;
             voegMin2.setForeground(Color.red);
             aantalSteden.setText("Aantal steden: " + gekozenSteden.size());
         }
-
-
+        if (e.getSource() == terugKnop){
+            tF.dispose();
+            new welkom();
+        }
     }
 }

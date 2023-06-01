@@ -22,7 +22,7 @@ public class rbAP extends JFrame implements ActionListener {
 
 
 
-    ImageIcon routeFoto = new ImageIcon("Kbs_Groep_2_Java/routeFoto.png");
+    ImageIcon routeFoto = new ImageIcon("routeFoto.png");
 
 private int aantalSteden = 0;
 
@@ -30,7 +30,7 @@ private int aantalSteden = 0;
 
     public rbAP(){
 
-        rs =  DatabaseConnection.DatabaseConn();
+        rs =  DatabaseConnection.getCities();
 
         loginP.setSize(700, 500);
         loginP.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,7 +93,6 @@ private int aantalSteden = 0;
                 } else {
                     p1.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.red));
                 }
-
         }
     }
 }

@@ -8,25 +8,13 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class welkom extends JFrame implements ActionListener {
-    ResultSet rs;
-
     JFrame Welkomp = new JFrame("Welkom");
 
 
-    JLabel l1, routeF,titelWelkom;
+    JLabel l1,titelWelkom;
 
-    JButton Routebepaling;
+    JButton Routebepaling,Orders;
 
-    JButton Orders;
-
-
-
-
-
-
-
-
-    ImageIcon routeFoto = new ImageIcon("routeFoto.png");
 
     Color kleur = new Color(241, 194, 125);
 
@@ -40,14 +28,12 @@ public class welkom extends JFrame implements ActionListener {
        Routebepaling.setBorder(BorderFactory.createLineBorder(Color.black, 1));
        Routebepaling.addActionListener(this);
 
-        Orders = new JButton("Routebepaling");
+        Orders = new JButton("Orders");
         Orders.setBounds(355, 240, 90, 40);
         Orders.setBackground(this.kleur);
         Orders.setForeground(Color.black);
         Orders.setBorder(BorderFactory.createLineBorder(Color.black, 1));
         Orders.addActionListener(this);
-
-        rs =  DatabaseConnection.DatabaseConn();
 
         Welkomp.setSize(700, 500);
         Welkomp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,22 +50,11 @@ public class welkom extends JFrame implements ActionListener {
         l1 = new JLabel("U bent succesvol ingelogd.");
         l1.setBounds(272,150,155,50);
 
-       // Routebepaling = new JButton("OK");
-       // Routebepaling.setBounds(300,240,75,25);
-
 
         Welkomp.add(titelWelkom);
-
         Welkomp.add(l1);
-
-
         Welkomp.add(Routebepaling);
-
         Welkomp.add(Orders);
-
-
-
-        Routebepaling.addActionListener(this);
 
         Welkomp.setResizable(false);
         Welkomp.setVisible(true);
@@ -88,18 +63,15 @@ public class welkom extends JFrame implements ActionListener {
 
 
 
-
-
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == Routebepaling) {
-
                 Welkomp.dispose();
                 new kiesFrame();
-
-
+        }
+        if (e.getSource() == Orders) {
+            Welkomp.dispose();
+            new OrdersPagina();
         }
     }
 }
