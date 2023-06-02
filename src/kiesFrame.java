@@ -79,8 +79,6 @@ JTextField zoekField;
 
         tF.setResizable(false);
         tF.setVisible(true);
-
-        //tF.dispose();
     }
 
     public boolean stadChecker(String stadNaam) {

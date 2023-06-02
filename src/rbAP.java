@@ -24,9 +24,6 @@ public class rbAP extends JFrame implements ActionListener {
 
     ImageIcon routeFoto = new ImageIcon("routeFoto.png");
 
-private int aantalSteden = 0;
-
-
 
     public rbAP(){
 

@@ -10,15 +10,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class OrdersPagina extends JFrame implements ActionListener {
-    ResultSet rs,rsOL;
+    ResultSet rs,rsOL,rsVoorraad;
     JFrame OP = new JFrame("OrdersPagina");
     Color kleur = new Color(241, 194, 125);
     JButton terugKnopO,OK, JA;
     JLabel titelO,Olabel, OrderInfo, isGeretourneerd;
     JSpinner OrderSpinner;
-    int CosID,OrdID;
+    int CosID,OrdID,rsO;
     String JaNee;
-    public OrdersPagina(){
+    String OrderInfoText = "OrderId: " + OrdID + "   CostumerId: " + CosID + "   Geretourneerd: " + JaNee;
+    public OrdersPagina() throws SQLException {
         OP.setSize(700, 500);
         OP.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         OP.setLayout(null);
@@ -40,7 +41,9 @@ public class OrdersPagina extends JFrame implements ActionListener {
         Olabel = new JLabel("Order id:");
         Olabel.setBounds(250,150,100,30);
 
-        SpinnerModel SM = new SpinnerNumberModel(1, 1, 100, 1);
+        rsO = DatabaseConnection.getOrdersSize();
+
+        SpinnerModel SM = new SpinnerNumberModel(1, 1, rsO, 1);
         OrderSpinner = new JSpinner(SM);
         OrderSpinner.setBounds(310,150,50,30);
         OrderSpinner.getEditor().getComponent(0).setBackground(kleur);
@@ -55,7 +58,6 @@ public class OrdersPagina extends JFrame implements ActionListener {
         CosID = 0;
         OrdID = 0;
         JaNee = "Nee";
-        String OrderInfoText = "OrderId: " + OrdID + "   CostumerId: " + CosID + "   Geretourneerd: " + JaNee;
         OrderInfo = new JLabel(OrderInfoText);
         OrderInfo.setBounds(200,200,300,30);
 
@@ -84,19 +86,19 @@ public class OrdersPagina extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == terugKnopO){
+        if (e.getSource() == terugKnopO) {
             OP.dispose();
             new welkom();
         }
-        if (e.getSource() == OK){
-            rs =  DatabaseConnection.getOrders();
+        if (e.getSource() == OK) {
+            rs = DatabaseConnection.getOrders();
             try {
-                while (rs.next()){
+                while (rs.next()) {
                     int OrderID = rs.getInt("OrderID");
-                    if (OrderID == (int) OrderSpinner.getValue()){
+                    if (OrderID == (int) OrderSpinner.getValue()) {
                         OrdID = (int) OrderSpinner.getValue();
                         CosID = rs.getInt("CustomerID");
-                        if (rs.getInt("Geretourneerd") == 0){
+                        if (rs.getInt("Geretourneerd") == 0) {
                             JaNee = "Nee";
                         } else {
                             JaNee = "Ja";
@@ -106,22 +108,29 @@ public class OrdersPagina extends JFrame implements ActionListener {
                 String OrderInfoText = "OrderId: " + OrdID + "   CostumerId: " + CosID + "   Geretourneerd: " + JaNee;
                 OrderInfo.setText(OrderInfoText);
             } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-
+                throw new RuntimeException(ex);
             }
-        if (e.getSource() == JA){
+
+        }
+        if (e.getSource() == JA) {
             rsOL = DatabaseConnection.getOrdersLines();
             JA.setBackground(Color.green);
             try {
                 while (rsOL.next()) {
                     int OrderID = rsOL.getInt("OrderID");
-                    if (OrderID == (int) OrderSpinner.getValue()){
-                        DatabaseConnection.updateStockItemsHolding(rsOL.getInt("StockItemID"));
+                    if (OrderID == (int) OrderSpinner.getValue() && rs.getInt("Geretourneerd") == 0) {
+                        int stockItemID = rsOL.getInt("StockItemID");
+                        DatabaseConnection.updateStockItemsHolding(stockItemID);
+                        DatabaseConnection.updateGeretourneerd(OrderID);
+                        JaNee = "Ja";
                     }
-                }} catch (SQLException ex){
-
+                }
+            } catch (SQLException ex) {
+                System.out.println("SQLException JA-knop");
+                System.out.println(ex.getMessage());
             }
         }
-        }
+        OrderInfoText = "OrderId: " + OrdID + "   CostumerId: " + CosID + "   Geretourneerd: " + JaNee;
+        OrderInfo.setText(OrderInfoText);
+    }
     }

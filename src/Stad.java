@@ -1,7 +1,4 @@
-import java.sql.ResultSet;
-
 public class Stad {
-    ResultSet rs = DatabaseConnection.getCities();
     private String naam;
     private double longitude,latitude;
 

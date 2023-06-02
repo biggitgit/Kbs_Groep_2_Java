@@ -71,7 +71,11 @@ public class welkom extends JFrame implements ActionListener {
         }
         if (e.getSource() == Orders) {
             Welkomp.dispose();
-            new OrdersPagina();
+            try {
+                new OrdersPagina();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 }

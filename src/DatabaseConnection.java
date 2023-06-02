@@ -46,6 +46,22 @@ public class DatabaseConnection {
         String query = "SELECT * FROM orders;";
         return executeQuery(query);
     }
+    public static int getOrdersSize() {
+        String query = "SELECT COUNT(*) AS SizeOrder FROM orders;";
+        ResultSet rs = executeQuery(query);
+        int count = 0;
+        try {
+            assert rs != null;
+            if (rs.next()) {
+                count = rs.getInt("SizeOrder");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResultSet(rs);
+        }
+        return count;
+    }
 
     public static ResultSet getStockItemsHolding() {
         String query = "SELECT * FROM stockitemsholding;";
@@ -58,6 +74,10 @@ public class DatabaseConnection {
     public static void updateStockItemsHolding(int StockID) {
         String query = "UPDATE stockitemsholding SET QuantityOnHand = QuantityOnHand + 1 WHERE StockItemID = " + StockID + ";";
          executeUpdate(query);
+    }
+    public static void updateGeretourneerd(int ORDERID) {
+        String query = "UPDATE orders SET Geretourneerd = 1 WHERE OrderID = " + ORDERID + ";";
+        executeUpdate(query);
     }
     public static void executeUpdate(String query) {
         Connection conn;
@@ -85,6 +105,15 @@ public class DatabaseConnection {
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+        }
+    }
+    private static void closeResultSet(ResultSet rs) {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
