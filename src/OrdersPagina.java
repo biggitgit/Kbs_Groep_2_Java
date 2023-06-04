@@ -35,7 +35,7 @@ public class OrdersPagina extends JFrame implements ActionListener {
         terugKnopO.setBorder(BorderFactory.createLineBorder(Color.black,2));
         terugKnopO.addActionListener(this);
 
-        titelO = new JLabel("Typ de gewenste order id:");
+        titelO = new JLabel("Voer de gewenste order id:");
         titelO.setBounds(150,60,500,30);
         titelO.setFont(new Font("Verdana", Font.BOLD, 25));
 
