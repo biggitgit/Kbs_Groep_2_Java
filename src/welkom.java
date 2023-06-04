@@ -28,7 +28,7 @@ public class welkom extends JFrame implements ActionListener {
        Routebepaling.setBorder(BorderFactory.createLineBorder(Color.black, 1));
        Routebepaling.addActionListener(this);
 
-        Orders = new JButton("Orders");
+        Orders = new JButton("Bestellingen");
         Orders.setBounds(355, 240, 90, 40);
         Orders.setBackground(this.kleur);
         Orders.setForeground(Color.black);
