@@ -9,20 +9,20 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class routeB extends JFrame implements ActionListener {
-    JFrame RB = new JFrame("Routebepaling");
-    JLabel gekozenS,startLabel, route,startLabelROUTE,KMroute, KMrouteTotaal, reisTijd;
-    Color kleur = new Color(241,194,125);
-    Stad startStad;
-    Stad eindStad;
-    kiesFrame kF;
-    ArrayList<Stad> gekozenSteden,eindRoute;
-    JScrollPane scrollbarSteden,scrollbarStedenROUTE;
-    String stadnaam;
-    JList<String> stedenList,stedenListROUTE;
-    JButton terugKiezen;
-    double kmRoute = 0;
-    double kmTerugRoute = 0;
-    double totaalRoute = 0;
+    private JFrame RB = new JFrame("Routebepaling");
+    private JLabel gekozenS,startLabel, route,startLabelROUTE,KMroute, KMrouteTotaal, reisTijd;
+    private Color kleur = new Color(241,194,125);
+    private Stad startStad;
+    private Stad eindStad;
+    private kiesFrame kF;
+    private ArrayList<Stad> gekozenSteden,eindRoute;
+    private JScrollPane scrollbarSteden,scrollbarStedenROUTE;
+    private String stadnaam;
+    private JList<String> stedenList,stedenListROUTE;
+    private JButton terugKiezen;
+    private double kmRoute = 0;
+    private double kmTerugRoute = 0;
+    private double totaalRoute = 0;
 
     public routeB(kiesFrame kiesFrame){
         kF = kiesFrame;
@@ -149,26 +149,26 @@ public class routeB extends JFrame implements ActionListener {
         double eind = 2 * Math.atan2(Math.sqrt(start), Math.sqrt(1-start));
 
         return eind * 6371; //Eindgetal X radius van de aarde in KM
-    }
-    public void bepaalRoute() {
+    }public void bepaalRoute() {
         eindRoute = new ArrayList<>();
         eindRoute.add(startStad);
         Stad kleinsteStad = null;
         for (int i=1;i<gekozenSteden.size();i++) {
+            Stad laatsteStad;
             for (Stad stad : gekozenSteden) {
                 if (stad != startStad && stad != kleinsteStad && !eindRoute.contains(stad)) {
                     if (kleinsteStad == null) {
                         kleinsteStad = stad;
                     }
-                    Stad laatsteStad = eindRoute.get(eindRoute.size() - 1);
-                        if (berekenAfstandSteden(stad.getLatitude(), stad.getLongitude(), laatsteStad.getLatitude(), laatsteStad.getLongitude())
-                                < berekenAfstandSteden(kleinsteStad.getLatitude(), kleinsteStad.getLongitude(), laatsteStad.getLatitude(), laatsteStad.getLongitude())) {
-                            kleinsteStad = stad;
-                        }
+                    laatsteStad = eindRoute.get(eindRoute.size() - 1);
+                    if (berekenAfstandSteden(stad.getLatitude(), stad.getLongitude(), laatsteStad.getLatitude(), laatsteStad.getLongitude())
+                            < berekenAfstandSteden(kleinsteStad.getLatitude(), kleinsteStad.getLongitude(), laatsteStad.getLatitude(), laatsteStad.getLongitude())) {
+                        kleinsteStad = stad;
                     }
+                }
             }
-            Stad LLstad = eindRoute.get(eindRoute.size() - 1);
-            kmRoute += (berekenAfstandSteden(kleinsteStad.getLatitude(), kleinsteStad.getLongitude(), LLstad.getLatitude(), LLstad.getLongitude()));
+            laatsteStad = eindRoute.get(eindRoute.size() - 1);
+            kmRoute += (berekenAfstandSteden(kleinsteStad.getLatitude(), kleinsteStad.getLongitude(), laatsteStad.getLatitude(), laatsteStad.getLongitude()));
             kmTerugRoute = (berekenAfstandSteden(eindStad.getLatitude(), eindStad.getLongitude(),startStad.getLatitude(), startStad.getLongitude()));
             totaalRoute = kmRoute + kmTerugRoute;
             eindRoute.add(kleinsteStad) ;// + terug km naar start stad
@@ -180,6 +180,7 @@ public class routeB extends JFrame implements ActionListener {
         }
         System.out.println("Totaal "+totaalRoute+" KM");
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

@@ -10,16 +10,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class OrdersPagina extends JFrame implements ActionListener {
-    ResultSet rs,rsOL,rsVoorraad;
-    JFrame OP = new JFrame("OrdersPagina");
-    Color kleur = new Color(241, 194, 125);
-    JButton terugKnopO,OK, JA;
-    JLabel titelO,Olabel, OrderInfo, isGeretourneerd;
-    JSpinner OrderSpinner;
-    int CosID,OrdID,rsO;
-    String JaNee;
-    String OrderInfoText = "OrderId: " + OrdID + "   CostumerId: " + CosID + "   Geretourneerd: " + JaNee;
-    boolean okClicked = false;
+    private ResultSet rs,rsOL;
+    private JFrame OP = new JFrame("OrdersPagina");
+    private Color kleur = new Color(241, 194, 125);
+    private JButton terugKnopO,OK, JA;
+    private JLabel titelO,Olabel, OrderInfo, isGeretourneerd;
+    private JSpinner OrderSpinner;
+    private int CosID,OrdID,rsO;
+    private String JaNee;
+    private String OrderInfoText = "OrderId: " + OrdID + "   CostumerId: " + CosID + "   Geretourneerd: " + JaNee;
+    private boolean okClicked = false;
     public OrdersPagina() throws SQLException {
         OP.setSize(700, 500);
         OP.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,7 +116,7 @@ public class OrdersPagina extends JFrame implements ActionListener {
         }
         if (e.getSource() == JA && okClicked) {
             rsOL = DatabaseConnection.getOrdersLines();
-            JA.setBackground(Color.green);
+
             try {
                 while (rsOL.next()) {
                     int OrderID = rsOL.getInt("OrderID");
@@ -125,7 +125,10 @@ public class OrdersPagina extends JFrame implements ActionListener {
                         DatabaseConnection.updateStockItemsHolding(stockItemID);
                         DatabaseConnection.updateGeretourneerd(OrderID);
                         JaNee = "Ja";
+                        JA.setBackground(Color.green);
                         break;
+                    } else {
+                        JA.setBackground(Color.red);
                     }
                 }
             } catch (SQLException ex) {

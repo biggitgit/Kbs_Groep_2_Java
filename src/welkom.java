@@ -8,15 +8,15 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class welkom extends JFrame implements ActionListener {
-    JFrame Welkomp = new JFrame("Welkom");
+    private JFrame Welkomp = new JFrame("Welkom");
 
 
-    JLabel l1,titelWelkom;
+    private JLabel l1,titelWelkom;
 
-    JButton Routebepaling,Orders;
+    private JButton Routebepaling,Orders;
 
 
-    Color kleur = new Color(241, 194, 125);
+    private Color kleur = new Color(241, 194, 125);
 
 
     public welkom(){

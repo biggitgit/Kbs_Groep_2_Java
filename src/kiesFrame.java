@@ -7,13 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class kiesFrame extends JFrame implements ActionListener {
-    JFrame tF = new JFrame("Steden kiezen");
-    JLabel titelK,extraInfZoek,voegMin2, aantalSteden;
-JTextField zoekField;
-    JButton routeB, voegToeStad, resetKnop, terugKnop;
-    ArrayList<Stad> gekozenSteden = new ArrayList<>();
-    Color kleur = new Color(241,194,125);
-
+    private JFrame tF = new JFrame("Steden kiezen");
+    private JLabel titelK,extraInfZoek,voegMin2, aantalSteden;
+    private JTextField zoekField;
+    private JButton routeB, voegToeStad, resetKnop, terugKnop;
+    private ArrayList<Stad> gekozenSteden = new ArrayList<>();
+    private Color kleur = new Color(241,194,125);
 
     public kiesFrame() {
         tF.setSize(700,500);

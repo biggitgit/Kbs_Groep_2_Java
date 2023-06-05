@@ -8,21 +8,13 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class rbAP extends JFrame implements ActionListener {
-    ResultSet rs;
+    private ResultSet rs;
 
-    JFrame loginP = new JFrame("Inloggen");
-
-
-    JLabel l1, routeF,titelInloggen;
-    JPasswordField p1;
-    JButton b1;
-
-
-
-
-
-
-    ImageIcon routeFoto = new ImageIcon("routeFoto.png");
+    private JFrame loginP = new JFrame("Inloggen");
+    private JLabel l1, routeF,titelInloggen;
+    private JPasswordField p1;
+    private JButton b1;
+    private ImageIcon routeFoto = new ImageIcon("routeFoto.png");
 
 
     public rbAP(){
