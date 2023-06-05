@@ -2,12 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Objects;
 
-public class rbAP extends JFrame implements ActionListener {
+public class InlogPagina extends JFrame implements ActionListener {
     private ResultSet rs;
 
     private JFrame loginP = new JFrame("Inloggen");
@@ -17,7 +14,7 @@ public class rbAP extends JFrame implements ActionListener {
     private ImageIcon routeFoto = new ImageIcon("routeFoto.png");
 
 
-    public rbAP(){
+    public InlogPagina(){
 
         rs =  DatabaseConnection.getCities();
 
@@ -78,7 +75,7 @@ public class rbAP extends JFrame implements ActionListener {
             String ingevuldWW = new String(p1.getPassword());
                 if (ingevuldWW.equals(System.getenv("PASS_inlog"))) {
                     loginP.dispose();
-                    new welkom();
+                    new WelkomPagina();
                 } else {
                     p1.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.red));
                 }

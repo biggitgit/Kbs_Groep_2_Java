@@ -1,20 +1,17 @@
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Line2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class routeB extends JFrame implements ActionListener {
+public class RoutePagina extends JFrame implements ActionListener {
     private JFrame RB = new JFrame("Routebepaling");
     private JLabel gekozenS,startLabel, route,startLabelROUTE,KMroute, KMrouteTotaal, reisTijd;
     private Color kleur = new Color(241,194,125);
     private Stad startStad;
     private Stad eindStad;
-    private kiesFrame kF;
+    private KiesStedenPagina kF;
     private ArrayList<Stad> gekozenSteden,eindRoute;
     private JScrollPane scrollbarSteden,scrollbarStedenROUTE;
     private String stadnaam;
@@ -24,8 +21,8 @@ public class routeB extends JFrame implements ActionListener {
     private double kmTerugRoute = 0;
     private double totaalRoute = 0;
 
-    public routeB(kiesFrame kiesFrame){
-        kF = kiesFrame;
+    public RoutePagina(KiesStedenPagina KiesStedenPagina){
+        kF = KiesStedenPagina;
 
         gekozenSteden = kF.getGekozenSteden();
         if (gekozenSteden.get(0) != null){
@@ -185,7 +182,7 @@ public class routeB extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == terugKiezen){
-            new kiesFrame();
+            new KiesStedenPagina();
             RB.dispose();
         }
     }

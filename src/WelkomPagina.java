@@ -2,12 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
-public class welkom extends JFrame implements ActionListener {
+public class WelkomPagina extends JFrame implements ActionListener {
     private JFrame Welkomp = new JFrame("Welkom");
 
 
@@ -19,7 +16,7 @@ public class welkom extends JFrame implements ActionListener {
     private Color kleur = new Color(241, 194, 125);
 
 
-    public welkom(){
+    public WelkomPagina(){
 
        Routebepaling = new JButton("Routebepaling");
        Routebepaling.setBounds(245, 240, 90, 40);
@@ -67,7 +64,7 @@ public class welkom extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == Routebepaling) {
                 Welkomp.dispose();
-                new kiesFrame();
+                new KiesStedenPagina();
         }
         if (e.getSource() == Orders) {
             Welkomp.dispose();

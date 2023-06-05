@@ -1,8 +1,4 @@
-import com.mysql.cj.protocol.Resultset;
-
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -89,7 +85,7 @@ public class OrdersPagina extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == terugKnopO) {
             OP.dispose();
-            new welkom();
+            new WelkomPagina();
         }
         if (e.getSource() == OK) {
             rs = DatabaseConnection.getOrders();

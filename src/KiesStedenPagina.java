@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class kiesFrame extends JFrame implements ActionListener {
+public class KiesStedenPagina extends JFrame implements ActionListener {
     private JFrame tF = new JFrame("Steden kiezen");
     private JLabel titelK,extraInfZoek,voegMin2, aantalSteden;
     private JTextField zoekField;
@@ -14,7 +14,7 @@ public class kiesFrame extends JFrame implements ActionListener {
     private ArrayList<Stad> gekozenSteden = new ArrayList<>();
     private Color kleur = new Color(241,194,125);
 
-    public kiesFrame() {
+    public KiesStedenPagina() {
         tF.setSize(700,500);
         tF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         tF.setLayout(null);
@@ -129,7 +129,7 @@ public class kiesFrame extends JFrame implements ActionListener {
         if (e.getSource() == routeB){
             if (gekozenSteden.size() > 1){
             tF.dispose();
-            new routeB(this);
+            new RoutePagina(this);
             }
         }
         if (e.getSource() == voegToeStad){
@@ -151,7 +151,7 @@ public class kiesFrame extends JFrame implements ActionListener {
         }
         if (e.getSource() == terugKnop){
             tF.dispose();
-            new welkom();
+            new WelkomPagina();
         }
     }
 }
