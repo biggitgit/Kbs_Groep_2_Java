@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mariadb://localhost:3306/nerdygadgets_java</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="nerdygadgets_java@localhost [2]" uuid="d454066b-46a0-4c2f-b94a-dd9f3c9af089">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://localhost:3306/nerdygadgets_java</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
