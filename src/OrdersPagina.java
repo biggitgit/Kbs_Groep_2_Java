@@ -44,7 +44,6 @@ public class OrdersPagina extends JFrame implements ActionListener {
         OrderSpinner = new JSpinner(SM);
         OrderSpinner.setBounds(310,150,50,30);
         OrderSpinner.getEditor().getComponent(0).setBackground(kleur);
-        ((JSpinner.DefaultEditor) OrderSpinner.getEditor()).getTextField().setEditable(false);
 
         OK = new JButton("OK");
         OK.setBounds(375,150,60,30);

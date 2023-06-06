@@ -62,11 +62,6 @@ public class DatabaseConnection {
         }
         return count;
     }
-
-    public static ResultSet getStockItemsHolding() {
-        String query = "SELECT * FROM stockitemsholding;";
-        return executeQuery(query);
-    }
     public static ResultSet getOrdersLines() {
         String query = "SELECT * FROM orderslines;";
         return executeQuery(query);
